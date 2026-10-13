@@ -1,6 +1,6 @@
 // Drone.h
 // ESE 224 Fall 2026 Midterm Project (starter code)
-// Team members: TODO
+// Team members: Sophia Rahman and Nafisa Patwary
 
 #ifndef DRONE_H
 #define DRONE_H
@@ -19,11 +19,11 @@ class Drone
 private:
     string name;
     int ID;
-    string model;
-    double battery;
-    double maxPayload;
-    int position[2];
-    string status;
+    string model;          // Kestrel, Falcon, or Condor
+    double battery;        // Battery level (0 to 100%)
+    double maxPayload;     // Heaviest package it can carry (kg)
+    int position[2];       // position[0] = x and position[1] = y
+    string status;         // IDLE, CHARGING, or MAINTENANCE
     int deliveriesCompleted;
 
 public:

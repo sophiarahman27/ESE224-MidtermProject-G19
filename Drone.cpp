@@ -1,6 +1,6 @@
 // Drone.cpp
 // ESE 224 Fall 2026 Midterm Project (starter code)
-// Team members: TODO
+// Team members: Sophia Rahman and Nafisa Patwary
 //
 // Every function below compiles but does nothing useful yet.
 // Replace each TODO with your implementation (see Section 3 of the handout).
@@ -16,7 +16,9 @@ using namespace std;
 Drone::Drone()
 {
     // TODO: set every member to its default value (table in Section 3.2)
+    name = ""; // SOP
     ID = -1;
+    model = ""; // SOP
     battery = 100.0;
     maxPayload = 0.0;
     position[0] = 0;
@@ -29,6 +31,14 @@ Drone::Drone(const string& n, int id, const string& m, double b, double p,
              int x, int y, const string& s) : Drone()
 {
     // TODO: set each member by calling its mutator, so invalid values keep the default
+    setName(n); // Line 34 - 41 by SOP
+    setID(id);
+    setModel(m);
+    setBattery(b);
+    setMaxPayload(p);
+    setPosition(0, x);
+    setPosition(1, y);
+    setStatus(s);
 }
 
 // ---------- Accessors ----------
