@@ -54,7 +54,14 @@ int Drone::getDeliveriesCompleted() const { return deliveriesCompleted; }
 int Drone::getPosition(int index) const
 {
     // TODO: index 0 is x, index 1 is y; any other index prints an error and returns -1
-    return -1;
+    if(index == 0){        // Line 57 - 64 by SOP
+        return position[0];
+    }else if(index == 1){
+        return position[1];
+    }else{
+        cout << "Error: position index must be a 0 or a 1" << endl;
+        return -1;
+    }
 }
 
 // ---------- Mutators ----------
@@ -67,36 +74,66 @@ void Drone::setName(const string& n)
 bool Drone::setID(int id)
 {
     // TODO: valid when id > 0
+    if(id > 0){      // Line 77 - 81 by SOP
+        ID = id;
+        return true;
+    }
+    cout << "Error: ID must be greater than 0" << endl;
     return false;
 }
 
 bool Drone::setModel(const string& m)
 {
     // TODO: valid when m is "Kestrel", "Falcon", or "Condor"
+    if(m == "Kestrel" || m == "Falcon" || m == "Condor"){  // Line 88 - 92 by SOP
+        model = m;
+        return true;
+    }
+    cout << "Error: model must be Kestrel or Falcon or Condor" << endl;
     return false;
 }
 
 bool Drone::setBattery(double b)
 {
     // TODO: valid when 0 <= b <= 100
+    if(b >= 0 && b <= 100){  // Line 99 - 103 by SOP
+        battery = b;
+        return true;
+    }
+    cout << "Error: battery value must be between 0 and 100" << endl;
     return false;
 }
 
 bool Drone::setMaxPayload(double p)
 {
     // TODO: valid when p > 0
+    if(p > 0){
+        maxPayload = p;
+        return true;
+    }
+    cout << "Error: the max payload must be greater than 0" << endl;
     return false;
 }
 
 bool Drone::setPosition(int index, int value)
 {
     // TODO: valid when index is 0 or 1 and value >= 0
+    if((index == 0 || index == 1) && value >= 0){ // Line 121 - 125 by SOP
+        position[index] = value;
+        return true;
+    }
+    cout << "Error: position index must be 0 or 1 and value must be greater than or equal to 0" << endl;
     return false;
 }
 
 bool Drone::setStatus(const string& s)
 {
     // TODO: valid when s is "IDLE", "CHARGING", or "MAINTENANCE"
+    if(s == "IDLE" || s == "CHARGING" || s == "MAINTENANCE"){
+        status = s;
+        return true;
+    }
+    cout << "Error: status must be IDLE or CHARGING or MAINTENANCE" << endl;
     return false;
 }
 
