@@ -1,6 +1,6 @@
 // Fleet.cpp
 // ESE 224 Fall 2026 Midterm Project (starter code)
-// Team members: TODO
+// Team members: Sophia and Nafisa
 //
 // Every function below compiles but does nothing useful yet.
 // Replace each TODO with your implementation (see Section 4 of the handout).
@@ -23,12 +23,17 @@ unsigned long long Fleet::nextRandom(unsigned long long &state) const
 
 void Fleet::swapDrones(int i, int j)
 {
-    // TODO: exchange drones[i] and drones[j] using a temporary Drone
+    if (i == j) return;          //check for if drones are alr the same
+    Drone temp = drones[i];      //copy drone i, overwrite with j, put copy into j
+    drones[i] = drones[j];       
+    drones[j] = temp;            
 }
 
 bool Fleet::validIndex(int index) const
 {
-    // TODO: true if 0 <= index < number of drones
+    if (index >= 0 && index < getSize()){
+        return true;                        //compare against 0 and accessor
+    }
     return false;
 }
 
@@ -36,14 +41,24 @@ bool Fleet::validIndex(int index) const
 
 bool Fleet::addDrone(const Drone& d)
 {
-    // TODO: reject a duplicate ID (use operator==), otherwise add to the end
-    return false;
+    int n = getSize();
+    for (int i = 0; i < n; i++){
+        if (drones[i] == d){ //check for same ID
+            cout << "Drone with ID " << d.getID() << " already exists in the fleet." << endl;
+            return false;
+        } 
+    }
+    drones.push_back(d);
+    return true;
 }
 
 Drone Fleet::getDrone(int index) const
 {
-    // TODO: check the range; print an error and return Drone() if invalid
-    return Drone();
+    if (index < 0 || index >= getSize()){
+        cerr << "Error: drone index " << index << " is out of range" << endl;
+        return Drone(); //return default uppon error
+    }
+    return drones[index]; //return correct drone if no error
 }
 
 int Fleet::getSize() const
