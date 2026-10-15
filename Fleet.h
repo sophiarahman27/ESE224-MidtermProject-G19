@@ -1,6 +1,6 @@
 // Fleet.h
 // ESE 224 Fall 2026 Midterm Project (starter code)
-// Team members: TODO
+// Team members: Sophia Rahman and Nafisa Patwary
 
 #ifndef FLEET_H
 #define FLEET_H
