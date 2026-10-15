@@ -142,24 +142,36 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     // TODO: straight-line distance from this drone to (x, y)
-    return 0.0;
+    double dx = x - position[0];        //Lines 145 - 147 by SOP
+    double dy = y - position[1];
+    return sqrt((dx * dx) + (dy * dy));
 }
 
 double Drone::batteryNeeded(int x, int y, double weight) const
 {
     // TODO: distanceTo(x, y) * BATTERY_PER_UNIT * (1 + PAYLOAD_FACTOR * weight)
-    return 0.0;
+    return distanceTo(x, y) * BATTERY_PER_UNIT * (1 + PAYLOAD_FACTOR * weight); // By SOP
 }
 
 bool Drone::canDeliver(int x, int y, double weight) const
 {
     // TODO: IDLE, weight <= maxPayload, and enough battery to keep SAFETY_RESERVE
-    return false;
+    if(status == "IDLE" && weight <= maxPayload && battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE){
+        return true;
+    }                   // Lines 159 - 161 by SOP
+    return false;  
 }
 
 void Drone::completeDelivery(int x, int y, double weight)
 {
     // TODO: use battery, move to (x, y), count the delivery, switch to CHARGING if below LOW_BATTERY
+    battery = battery - batteryNeeded(x, y, weight); //Lines 168 - 174 by SOP
+    position[0] = x;
+    position[1] = y;
+    deliveriesCompleted++;
+    if(battery < LOW_BATTERY){
+        status = "CHARGING";
+    }
 }
 
 // ---------- Display and comparison ----------
@@ -167,10 +179,18 @@ void Drone::completeDelivery(int x, int y, double weight)
 void Drone::displayDrone() const
 {
     // TODO: print every member with a label
+    cout << "Name: " << name << endl; // Lines 182 - 189 by SOP
+    cout << "ID: " << ID << endl;
+    cout << "Model: " << model << endl;
+    cout << "Battery: " << fixed << setprecision(1) << battery << "%" << endl;
+    cout << "Max Payload: " << maxPayload << " kg" << endl;
+    cout << "Position: (" << position[0] << ", " << position[1] << ")" << endl;
+    cout << "Status: " << status << endl;;
+    cout << "Deliveries Completed: " << deliveriesCompleted << endl;
 }
 
 bool Drone::operator==(const Drone& other) const
 {
     // TODO: two drones are equal if they have the same ID
-    return false;
+    return ID == other.ID; // SOP
 }
