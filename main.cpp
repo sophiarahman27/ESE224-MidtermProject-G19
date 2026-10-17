@@ -58,6 +58,35 @@ void login()
 //       add each one to the fleet, and print how many were loaded.
 void loadFleet(Fleet& fleet, const string& filename)
 {
+    ifstream dronesFile(filename);
+    if (!dronesFile){
+        cerr << "Error: could not open " << filename << endl;
+        exit(1);
+    }
+
+    //constructor attributes
+    string name;
+    string model;
+    string status;
+
+    int id;
+    int x;
+    int y;
+
+    double battery;
+    double maxPayload;
+
+    int count = 0;
+
+    //read each line and create a drone object, adding it to the fleet
+    while (dronesFile >> name >> id >> model >> battery >> maxPayload >> x >> y >> status){
+        Drone d(name, id, model, battery, maxPayload, x, y, status);
+        if (fleet.addDrone(d)){ //false if duplicate ID
+            count++;
+        }          
+    }
+
+    cout << "Loaded " << count << " drones." << endl;
 }
 
 void showMenu()
