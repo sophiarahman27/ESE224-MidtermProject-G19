@@ -16,6 +16,42 @@ using namespace std;
 //       then greet the user by name.
 void login()
 {
+    //input file handling for logins
+    ifstream usersFile("users.txt");
+    if (!usersFile){
+        cerr << "Error: could not open users.txt" << endl;
+        exit(1);
+    }
+
+    string username;
+    string pw;
+    bool found = false;
+
+    while (!found){
+        cout << "Please enter your username and password, with a space in between: " << endl;
+        cin >> username >> pw;
+
+        usersFile.clear(); //clear EOF flag
+        usersFile.seekg(0); //go back to the beginning of the file
+
+        string fileUser;
+        string filePw;  //read each line for pairs and compare
+
+        while (usersFile >> fileUser >> filePw){ //checks entire pair
+            if (fileUser == username && filePw == pw){
+                found = true;
+                break;
+            }
+        }
+
+        if (!found){
+            cout << "Invalid username or password. Please try again." << endl;
+        }
+
+        else{
+            cout << "Welcome, " << username << "! You have succesfully logged in." << endl;
+        }
+    }
 }
 
 // TODO: read every drone from the file until the end of the file,
