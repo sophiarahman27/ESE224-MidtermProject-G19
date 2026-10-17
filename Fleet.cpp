@@ -167,7 +167,14 @@ int Fleet::linearSearchByName(const string& name) const
     int n = getSize();
     int comparisons = 0;
 
-    for (int i = 0; i++ i < n)
+    for (int i = 0; i < n; i++){
+        comparisons++;
+        if(drones[i].getName() == name){ // used the getName() method from the drone class - SOP
+            cout << "Linear search comparisons: " << comparisons << endl;
+            return i;
+        }
+    }
+    cout << "Linear search comparisons: " << comparisons << endl;
     return -1;
 }
 
@@ -175,6 +182,30 @@ int Fleet::binarySearchByID(int id)
 {
     // TODO: sort first if needed (print a message), then binary search.
     // One comparison per loop iteration. Print the count; return index or -1.
+    if(!isSortedByID()){
+        cout << "Fleet is not sorted by ID. Sorting now. . ." << endl;
+        selectionSortByID();
+    }
+
+    int count = 0;
+    int low = 0;
+    int high = getSize() - 1;
+
+    while(low <= high){
+        int mid = low + (high-low) / 2;
+        int midID = drones[mid].getID();
+        ++count;
+
+        if(midID == id){
+            cout << "Binary Search Comparisons: " << count << endl;
+            return mid;
+        }else if(midID < id){
+            low = mid + 1;
+        }else if(midID > id){
+            high = mid - 1;
+        }
+    }
+    cout << "Binary Search Comparisons: " << count << endl;
     return -1;
 }
 
