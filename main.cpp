@@ -126,6 +126,16 @@ int main()
         // TODO: if the user types a letter, cin fails. Recover (cin.clear and
         //       cin.ignore from <limits>) instead of crashing or looping forever.
 
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');//clear buffer
+        }
+
+        if (choice < 0 || choice > 14){
+            cout << "Invalid option." << endl;
+            continue;
+        }
+
         switch (choice)
         {
         case 1:
