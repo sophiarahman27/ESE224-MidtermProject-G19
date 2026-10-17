@@ -164,6 +164,10 @@ bool Fleet::isSortedByID() const
 int Fleet::linearSearchByName(const string& name) const
 {
     // TODO: one comparison per drone checked; print the count; return index or -1
+    int n = getSize();
+    int comparisons = 0;
+
+    for (int i = 0; i++ i < n)
     return -1;
 }
 
