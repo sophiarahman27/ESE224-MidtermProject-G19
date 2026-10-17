@@ -72,21 +72,90 @@ int Fleet::getSize() const
 void Fleet::selectionSortByID()
 {
     // TODO: ascending by ID. Print: Selection sort by ID: C comparisons, S swaps.
+    int n = getSize();
+    int comparisons = 0; //counts
+    int swaps = 0;
+
+    for (int i = 0; i < n -1; i++){
+        int minI = i;
+        for (int j = i + 1; j < n; j++){    //nested loop to compare each drone against tracked minimum index, updating when a new min is found
+            comparisons++;
+            if (drones[j].getID() < drones[minI].getID()){
+                minI = j;
+            }
+        }
+        if (minI != i){
+            swapDrones(i, minI); //swapping if finding new minimum
+            swaps++;
+        }
+    }
+
+    cout << "Selection sort by ID: " << comparisons << " comparisons, " << swaps << " swaps." << endl;
 }
 
 void Fleet::insertionSortByBattery()
 {
     // TODO: descending by battery. Print: Insertion sort by battery: C comparisons, H shifts.
+    int n = getSize();
+    int comparisons = 0;
+    int shifts = 0;
+
+    for (int i = 1; i < n; i++)
+    {
+        Drone key = drones[i];
+        int j = i - 1;
+        while (j >= 0){                                       //do not coutn start as a comparison
+            comparisons++;                                   //key vs. drone at index j
+            if (drones[j].getBattery() < key.getBattery()){   //lower battery moves right 
+                drones[j + 1] = drones[j];
+                shifts++;
+                j--;
+            }
+            else{
+                break;
+            }
+        }
+        drones[j + 1] = key;                                 //do not count placement of key as a shift
+    }
+
+    cout << "Insertion sort by battery: " << comparisons << " comparisons, " << shifts << " shifts." << endl;
+
 }
 
 void Fleet::sortByName()
 {
-    // TODO: insertion sort, alphabetical. Print: Insertion sort by name: C comparisons, H shifts.
+    int n = getSize();
+    int comparisons = 0;
+    int shifts = 0;
+
+    for (int i = 1; i < n; i++){
+        Drone key = drones[i];
+        int j = i - 1;  //do not count start as a comparison/count
+        while (j >= 0){
+            comparisons++;
+            if (drones[j].getName() > key.getName()){ //greater moves right
+                drones[j + 1] = drones[j];
+                shifts++;
+                j--;
+            }
+            else{
+                break;
+            }
+        }
+        drones[j + 1] = key;
+    }
+
+    cout << "Insertion sort by name: " << comparisons << " comparisons, " << shifts << " shifts." << endl;
 }
 
 bool Fleet::isSortedByID() const
 {
-    // TODO
+    for (int i = 1; i < getSize(); i++){
+            if (drones[i - 1].getID() > drones[i].getID()){
+                return false; //if any drone is greater than the next, return false
+            }
+        return true;                                             // empty or one drone counts as sorted
+    }
     return false;
 }
 
