@@ -212,64 +212,48 @@ int main()
 
         case 9:
         {
-            cout << "Enter the index of the drone to dispatch: " << endl;
-            int dispatchIndex;
-            cin >> dispatchIndex;
 
-            cout << "Enter x, y coordinates and weight: " << endl;
-            int dx, dy;
-            double dweight;
-            cin >> dx >> dy >> dweight;
-
-            if (fleet.dispatchDrone(dispatchIndex, dx, dy, dweight)){
-                cout << "Drone dispatched successfully." << endl;
-            }
-            else{
-                cout << "Failed to dispatch drone." << endl;
-            }
-            break;
         }
 
         case 10:
         {
-            cout << "Enter the ID of the drone to recharge: " << endl;
-            int rechargeID;
-            cin >> rechargeID;
+            //dispatch that drone and display again
+            cout << "Enter x, y coordinates and weight: " << endl;
+            int dx, dy;
+            double dweight;
 
-            if (fleet.rechargeDrone(rechargeID)){
-                cout << "Drone recharged successfully." << endl;
+            cin >> dx >> dy >> dweight;
+
+            int idx = fleet.findNearestAvailable(dx, dy, dweight);
+            if (idx != -1){
+                cout << "No available drone found." << endl;
+                break;
+            }
+            cout << "Nearest available drone found: " << endl;
+            fleet.displayDrone(idx);
+
+            if (fleet.dispatchDrone(idx, dx, dy, dweight)){
+                cout << "Drone dispatched successfully." << endl;
+                fleet.displayDrone(idx);
             }
             else{
-                cout << "Failed to recharge drone." << endl;
+                cout << "Failed to dispatch delivery." << endl;
             }
             break;
-        }
+         }
 
         case 11:
             fleet.countByStatus();
             break;
         
         case 12:
-        {
-            cout << "Enter the order file name: " << endl;
-            string orderFile;
-            cin >> orderFile;
-
-            cout << "Enter the log file name: " << endl;
-            string logFile;
-            cin >> logFile;
-
-            fleet.processOrders(orderFile, logFile);
+            fleet.processOrders("orders.txt", "delivery_log.txt");
             break;
-        }
         
         case 13:
         {
-            cout << "Enter the filename to write the fleet to: " << endl;
-            string outputFile;
-            cin >> outputFile;
-
-            fleet.writeFleetToFile(outputFile);
+            fleet.writeFleetToFile("fleet_output.txt");
+            cout << "Fleet written to fleet_output.txt" << endl;
             break;
         }
 
@@ -282,12 +266,25 @@ int main()
             cin >> newName >> newId >> newModel >> newBattery >> newMaxPayload >>
             newX >> newY >> newStatus;
 
-            Drone newDrone(newName, newId, newModel, newBattery, newMaxPayload, newX, newY, newStatus);
-            if (fleet.addDrone(newDrone)){
-                cout << "Drone added successfully." << endl;
+            Drone newDrone;
+            //mutators one by one to check validity of each input
+            newDrone.setName(newName);
+            newDrone.setID(newId);
+            bool ok = true; //this boolean is used to check validity 
+            ok = newDrone.setModel(newModel) && ok;
+            ok = newDrone.setBattery(newBattery) && ok;
+            ok = newDrone.setMaxPayload(newMaxPayload) && ok;
+            ok = newDrone.setPosition(0, newX) && ok;
+            ok = newDrone.setPosition(1, newY) && ok;
+            ok = newDrone.setStatus(newStatus) && ok;
+
+            if (!ok){
+                cout << "Invalid drone details. Drone not added." << endl;
+                break;
             }
-            else{
-                cout << "Failed to add drone. Duplicate ID?" << endl;
+
+            if (fleet.addDrone(newDrone)){ //will check for duplicate drones
+                cout <<"Drone added succesfully!" << endl;
             }
             break;
         }
