@@ -1,0 +1,22 @@
+Order 5001: Drone 475 (Pulse) distance 6 battery 50.5 -> 30.1
+Order 5002: Drone 448 (Atlas) distance 7.81025 battery 72.6 -> 51.6685
+Order 5003: Drone 985 (Lynx) distance 4 battery 55.4 -> 35.24
+Order 5004: Drone 862 (Dart) distance 1.41421 battery 96.3 -> 93.019
+Order 5005: Drone 176 (Vortex) distance 9.43398 battery 90.4 -> 37.9471
+Order 5006: Drone 617 (Comet) distance 10.4403 battery 99.3 -> 68.3967
+Order 5007: Drone 176 (Vortex) distance 4 battery 37.9471 -> 25.3071
+Order 5008: Drone 862 (Dart) distance 8.24621 battery 93.019 -> 60.6939
+Order 5009: Drone 862 (Dart) distance 1.41421 battery 60.6939 -> 56.8472
+Order 5010: Drone 333 (Wisp) distance 7.61577 battery 64.1 -> 46.1268
+Order 5011: Unassigned
+Order 5012: Drone 448 (Atlas) distance 5.65685 battery 51.6685 -> 34.9242
+Order 5013: Unassigned
+Order 5014: Drone 349 (Umbra) distance 5.09902 battery 90.1 -> 72.7633
+Order 5015: Drone 985 (Lynx) distance 1.41421 battery 35.24 -> 31.6196
+Order 5016: Unassigned
+Order 5017: Drone 862 (Dart) distance 9.43398 battery 56.8472 -> 20.9981
+Order 5018: Drone 333 (Wisp) distance 4.24264 battery 46.1268 -> 35.2656
+Order 5019: Unassigned
+Order 5020: Drone 342 (Meteor) distance 3.16228 battery 82.6 -> 74.7576
+Order 5021: Drone 342 (Meteor) distance 13.0384 battery 74.7576 -> 43.4654
+Assigned 17 of 21 orders. Total distance flown: 102.422

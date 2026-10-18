@@ -218,35 +218,40 @@ int main()
 
         case 9:
         {
-
-        }
-
-        case 10:
-        {
-            //dispatch that drone and display again
             cout << "Enter x, y coordinates and weight: " << endl;
             int dx, dy;
             double dweight;
-
             cin >> dx >> dy >> dweight;
-
+ 
             int idx = fleet.findNearestAvailable(dx, dy, dweight);
-            if (idx != -1){
+            if (idx == -1){                         //-1 means NO drone can deliver
                 cout << "No available drone found." << endl;
                 break;
             }
-            cout << "Nearest available drone found: " << endl;
+            cout << "Nearest available drone found (before delivery): " << endl;
             fleet.displayDrone(idx);
-
+ 
             if (fleet.dispatchDrone(idx, dx, dy, dweight)){
-                cout << "Drone dispatched successfully." << endl;
+                cout << "Drone dispatched successfully. After delivery: " << endl;
                 fleet.displayDrone(idx);
             }
             else{
                 cout << "Failed to dispatch delivery." << endl;
             }
             break;
-         }
+        }
+
+        case 10:
+        {
+            cout << "Enter the ID of the drone to recharge: " << endl;
+            int rechargeID;
+            cin >> rechargeID;
+
+            if (fleet.rechargeDrone(rechargeID)){   //prints its own message when it fails
+                cout << "Drone " << rechargeID << " recharged to 100% and set to IDLE." << endl;
+            }
+            break;
+        }
 
         case 11:
             fleet.countByStatus();
@@ -277,6 +282,7 @@ int main()
             newDrone.setName(newName);
             newDrone.setID(newId);
             bool ok = true; //this boolean is used to check validity 
+            ok = newDrone.setID(newId) && ok;       
             ok = newDrone.setModel(newModel) && ok;
             ok = newDrone.setBattery(newBattery) && ok;
             ok = newDrone.setMaxPayload(newMaxPayload) && ok;

@@ -100,8 +100,7 @@ void Fleet::insertionSortByBattery()
     int comparisons = 0;
     int shifts = 0;
 
-    for (int i = 1; i < n; i++)
-    {
+    for (int i = 1; i < n; i++){
         Drone key = drones[i];
         int j = i - 1;
         while (j >= 0){                                       //do not coutn start as a comparison
@@ -150,17 +149,12 @@ void Fleet::sortByName()
 
 bool Fleet::isSortedByID() const
 {
-    if(getSize() == 0 || getSize() == 1){
-        return true;
-    }
-
     for (int i = 1; i < getSize(); i++){
-            if (drones[i - 1].getID() > drones[i].getID()){
-                return false; //if any drone is greater than the next, return false
-            }
-        return true;                                             // empty or one drone counts as sorted
+        if (drones[i - 1].getID() > drones[i].getID()){
+            return false;               //if pair out of order found, return false
+        }
     }
-    return false;
+    return true;                        //checked or only 0/1 drones
 }
 
 // ---------- Searching ----------
@@ -173,9 +167,9 @@ int Fleet::linearSearchByName(const string& name) const
 
     for (int i = 0; i < n; i++){
         ++comparisons;
-        if(drones[i].getName() == name){ // used the getName() method from the drone class - SOP
+        if(drones[i].getName() == name){ 
             cout << "Linear search comparisons: " << comparisons << endl;
-            return i;
+            return i;   //i s the index of the drone with the matching name
         }
     }
     cout << "Linear search comparisons: " << comparisons << endl;
@@ -184,9 +178,7 @@ int Fleet::linearSearchByName(const string& name) const
 
 int Fleet::binarySearchByID(int id)
 {
-    // TODO: sort first if needed (print a message), then binary search.
-    // One comparison per loop iteration. Print the count; return index or -1.
-    if(!isSortedByID()){
+    if (!isSortedByID()){
         cout << "Fleet is not sorted by ID. Sorting now. . ." << endl;
         selectionSortByID();
     }
@@ -195,17 +187,18 @@ int Fleet::binarySearchByID(int id)
     int low = 0;
     int high = getSize() - 1;
 
-    while(low <= high){
-        int mid = low + (high-low) / 2;
+    while (low <= high){
+        int mid = (low + high) / 2;
         int midID = drones[mid].getID();
-        ++count;
+        ++count;                        //one comparison for every middle element examined
 
-        if(midID == id){
+        //standard binary search algorithm
+        if (midID == id){
             cout << "Binary Search Comparisons: " << count << endl;
             return mid;
-        }else if(midID < id){
+        }else if (midID < id){
             low = mid + 1;
-        }else if(midID > id){
+        }else{
             high = mid - 1;
         }
     }
@@ -219,18 +212,19 @@ int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
     // TODO: closest drone that canDeliver; ties go to the smaller ID; -1 if none
     int n = getSize();
-    int bestIndex = -1; // Not a valid index but will change to the first index of the loop - SOP
-    int bestDist = 0; // This will also change based on the first index - SOP
+    int bestIndex = -1; //will change to first index of loop
+    int bestDist = 0; //change based on first drone that can deliver based on distacnce
 
     for(int i = 0; i < n; i++){
-        if(!drones[i].canDeliver(x, y, weight)){  
+        if(!drones[i].canDeliver(x, y, weight)){  //check weight restrictions
             continue;
         }
 
-        int dx = drones[i].getPosition(0) - x;
+        int dx = drones[i].getPosition(0) - x; //comparing coordinates
         int dy = drones[i].getPosition(1) - y;
         int dist = dx * dx + dy * dy;
 
+        //this long header decides which drone is best by comparing values
         if(bestIndex == -1 || dist < bestDist || (dist == bestDist && drones[i].getID() < drones[bestIndex].getID())){
             bestIndex = i;
             bestDist = dist;
@@ -259,7 +253,7 @@ bool Fleet::rechargeDrone(int id)
     // TODO: battery 100 and IDLE, unless MAINTENANCE; message if not found
     for(int i = 0; i < getSize(); i++){
         if(drones[i].getID() == id){
-            drones[i].setBattery(100);
+            drones[i].setBattery(100); //recharge battery of chosen drone
 
             if(drones[i].getStatus() != "MAINTENANCE"){
                 drones[i].setStatus("IDLE");
@@ -280,8 +274,9 @@ void Fleet::countByStatus() const
     double avgBattery = 0.0;
     double sum = 0.0;
 
+    //simply count each status and sum battery levels, then calculate average
     for(int i = 0; i < getSize(); i++){
-        if(drones[i].getStatus() == "IDLE"){
+        if(drones[i].getStatus() == "IDLE"){ 
             ++countIDLE;
         }else if(drones[i].getStatus() == "CHARGING"){
             ++countCHARGING;
