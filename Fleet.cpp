@@ -360,12 +360,6 @@ void Fleet::processOrders(const string& orderFile, const string& logFile)
 
 // ---------- Other ----------
 
-unsigned long long Fleet::nextRandom(unsigned long long &state) const
-{
-    state = (state * 1103515245ULL + 12345ULL) % 2147483648ULL;
-    return state;
-}
-
 void Fleet::shuffleFleet(unsigned long long seed)
 {
     // TODO: Fisher-Yates. state = seed; for i from n-1 down to 1:
