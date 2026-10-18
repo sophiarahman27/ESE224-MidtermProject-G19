@@ -123,13 +123,19 @@ int main()
         showMenu();
         cout << "Choose an option: ";
         cin >> choice;
-        // TODO: if the user types a letter, cin fails. Recover (cin.clear and
-        //       cin.ignore from <limits>) instead of crashing or looping forever.
 
-        if (cin.fail()){ //automatically checks for integer as choice is int value
+        while (cin.fail()){
+            if (cin.eof()){                         //input ended: exit instead of looping forever
+                cout << "\nInput ended. Goodbye!" << endl;
+                return 0;
+            }
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');//clear buffer
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');   //clear buffer
+            cout << "Invalid input. Please enter a number." << endl;
+            cout << "Choose an option: ";
+            cin >> choice;
         }
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');       //discard leftovers like "abc" in "3abc"
 
         if (choice < 0 || choice > 14){
             cout << "Invalid option." << endl;

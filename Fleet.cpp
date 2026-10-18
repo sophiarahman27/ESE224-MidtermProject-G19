@@ -79,14 +79,14 @@ void Fleet::selectionSortByID()
     for (int i = 0; i < n -1; i++){
         int minI = i;
         for (int j = i + 1; j < n; j++){    //nested loop to compare each drone against tracked minimum index, updating when a new min is found
-            comparisons++;
+            ++comparisons;
             if (drones[j].getID() < drones[minI].getID()){
                 minI = j;
             }
         }
         if (minI != i){
             swapDrones(i, minI); //swapping if finding new minimum
-            swaps++;
+            ++swaps;
         }
     }
 
@@ -105,10 +105,10 @@ void Fleet::insertionSortByBattery()
         Drone key = drones[i];
         int j = i - 1;
         while (j >= 0){                                       //do not coutn start as a comparison
-            comparisons++;                                   //key vs. drone at index j
+            ++comparisons;                                   //key vs. drone at index j
             if (drones[j].getBattery() < key.getBattery()){   //lower battery moves right 
                 drones[j + 1] = drones[j];
-                shifts++;
+                ++shifts;
                 j--;
             }
             else{
@@ -132,10 +132,10 @@ void Fleet::sortByName()
         Drone key = drones[i];
         int j = i - 1;  //do not count start as a comparison/count
         while (j >= 0){
-            comparisons++;
+            ++comparisons;
             if (drones[j].getName() > key.getName()){ //greater moves right
                 drones[j + 1] = drones[j];
-                shifts++;
+                ++shifts;
                 j--;
             }
             else{
@@ -172,7 +172,7 @@ int Fleet::linearSearchByName(const string& name) const
     int comparisons = 0;
 
     for (int i = 0; i < n; i++){
-        comparisons++;
+        ++comparisons;
         if(drones[i].getName() == name){ // used the getName() method from the drone class - SOP
             cout << "Linear search comparisons: " << comparisons << endl;
             return i;
