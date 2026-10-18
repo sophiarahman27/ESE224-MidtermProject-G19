@@ -379,14 +379,44 @@ void Fleet::shuffleFleet(unsigned long long seed)
 void Fleet::displayAll() const
 {
     // TODO: print every drone with its index
+    for(int i = 0; i < getSize(); i++){
+        cout << "Drone [" << i << "]" << endl;
+        drones[i].displayDrone();
+        cout << endl;
+    }
 }
 
 void Fleet::displayDrone(int index) const
 {
     // TODO: check the range, then print one drone
+    if(index < 0 || index > getSize()){
+        cout << "Error: invalid drone index " << index << endl;
+        return;
+    }
+    drones[index].displayDrone();
 }
 
 void Fleet::writeFleetToFile(const string& filename) const
 {
     // TODO: same format as drones.txt plus deliveriesCompleted; one decimal for battery and payload
+    ofstream out(filename);
+
+    if (!out) {
+        cout << "Error: could not open file " << filename << endl;
+        return;
+    }
+
+    out << fixed << setprecision(1);
+
+    for (int i = 0; i < getSize(); ++i) {
+        out << drones[i].getName() << " "
+            << drones[i].getID() << " "
+            << drones[i].getModel() << " "
+            << drones[i].getBattery() << " "
+            << drones[i].getMaxPayload() << " "
+            << drones[i].getPosition(0) << " "
+            << drones[i].getPosition(1) << " "
+            << drones[i].getStatus() << " "
+            << drones[i].getDeliveriesCompleted() << endl;
+    }
 }
