@@ -150,6 +150,10 @@ void Fleet::sortByName()
 
 bool Fleet::isSortedByID() const
 {
+    if(getSize() == 0 || getSize() == 1){
+        return true;
+    }
+
     for (int i = 1; i < getSize(); i++){
             if (drones[i - 1].getID() > drones[i].getID()){
                 return false; //if any drone is greater than the next, return false
@@ -214,24 +218,86 @@ int Fleet::binarySearchByID(int id)
 int Fleet::findNearestAvailable(int x, int y, double weight) const
 {
     // TODO: closest drone that canDeliver; ties go to the smaller ID; -1 if none
-    return -1;
+    int n = getSize();
+    int bestIndex = -1; // Not a valid index but will change to the first index of the loop - SOP
+    int bestDist = 0; // This will also change based on the first index - SOP
+
+    for(int i = 0; i < n; i++){
+        if(!drones[i].canDeliver(x, y, weight)){  
+            continue;
+        }
+
+        int dx = drones[i].getPosition(0) - x;
+        int dy = drones[i].getPosition(1) - y;
+        int dist = dx * dx + dy * dy;
+
+        if(bestIndex == -1 || dist < bestDist || (dist == bestDist && drones[i].getID() < drones[bestIndex].getID())){
+            bestIndex = i;
+            bestDist = dist;
+        }
+    }
+    return bestIndex;
 }
 
 bool Fleet::dispatchDrone(int index, int x, int y, double weight)
 {
     // TODO: check index and canDeliver, then completeDelivery
-    return false;
+    if(index < 0 || index > getSize()){
+        return false;
+    }
+
+    if(!drones[index].canDeliver(x, y, weight)){
+        return false;
+    }
+
+    drones[index].completeDelivery(x, y, weight);
+    return true;
 }
 
 bool Fleet::rechargeDrone(int id)
 {
     // TODO: battery 100 and IDLE, unless MAINTENANCE; message if not found
+    for(int i = 0; i < getSize(); i++){
+        if(drones[i].getID() == id){
+            drones[i].setBattery(100);
+
+            if(drones[i].getStatus() != "MAINTENANCE"){
+                drones[i].setStatus("IDLE");
+            }
+            return true;
+        }
+    }
+    cout << "Drone with ID: " << id << " not found." << endl;
     return false;
 }
 
 void Fleet::countByStatus() const
 {
     // TODO: counts of IDLE, CHARGING, MAINTENANCE and the average battery
+    int countIDLE = 0;
+    int countCHARGING = 0;
+    int countMAINTENANCE = 0;
+    double avgBattery = 0.0;
+    double sum = 0.0;
+
+    for(int i = 0; i < getSize(); i++){
+        if(drones[i].getStatus() == "IDLE"){
+            ++countIDLE;
+        }else if(drones[i].getStatus() == "CHARGING"){
+            ++countCHARGING;
+        }else if(drones[i].getStatus() == "MAINTENANCE"){
+            ++countMAINTENANCE;
+        }
+
+        sum += drones[i].getBattery(); 
+    }
+
+    avgBattery = sum / getSize(); 
+
+    cout << "Total IDLE drones: " << countIDLE << endl;
+    cout << "Total CHARGING drones: " << countCHARGING << endl;
+    cout << "Total MAINTENANCE drones: " << countMAINTENANCE << endl;
+    cout << "Average Battery: " << fixed << setprecision(1) << avgBattery << "%" << endl;
 }
 
 void Fleet::processOrders(const string& orderFile, const string& logFile)
@@ -239,6 +305,57 @@ void Fleet::processOrders(const string& orderFile, const string& logFile)
     // TODO: for each order in file order, find the nearest available drone and dispatch it.
     // Write one line per order to the screen and the log, then the summary line.
     // Sum the exact distances; round only when printing.
+    ifstream in(orderFile);
+    ofstream log(logFile);
+
+    if (!in) {
+        cout << "Could not open order file: " << orderFile << endl;
+        return;
+    }
+    if (!log) {
+        cout << "Could not open log file: " << logFile << endl;
+        return;
+    }
+
+    int orderID, x, y;
+    double weight;
+    int totalOrders = 0;
+    int assigned = 0;
+    double totalDistance = 0.0;
+
+    while(in >> orderID >> x >> y >> weight){
+        ++totalOrders;
+        int index = findNearestAvailable(x, y, weight);
+
+        if(index == -1){
+            cout << "Order " << orderID << ": Unassigned" << endl;
+            log << "Order " << orderID << ": Unassigned" << endl;
+        }else{
+            int droneID = drones[index].getID();
+            string droneName = drones[index].getName();
+            double dist = drones[index].distanceTo(x, y);
+            double batteryBefore = drones[index].getBattery();
+
+            dispatchDrone(index, x, y, weight);
+
+            double batteryAfter = drones[index].getBattery();
+            totalDistance += dist;
+            ++assigned;
+
+             cout << "Order " << orderID << ": Drone " << droneID
+             << " (" << droneName << ") distance " << dist
+             << " battery " << batteryBefore << " -> " << batteryAfter << endl;
+        log  << "Order " << orderID << ": Drone " << droneID
+             << " (" << droneName << ") distance " << dist
+             << " battery " << batteryBefore << " -> " << batteryAfter << endl;
+        }
+    }
+
+    cout << "Assigned " << assigned << " of " << totalOrders
+         << " orders. Total distance flown: " << totalDistance << endl;
+    log  << "Assigned " << assigned << " of " << totalOrders
+         << " orders. Total distance flown: " << totalDistance << endl;
+
 }
 
 // ---------- Other ----------
