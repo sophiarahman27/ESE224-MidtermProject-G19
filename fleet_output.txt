@@ -1,0 +1,14 @@
+Blaze 614 Falcon 86.8 5.0 6 15 IDLE 0
+Flint 154 Condor 61.7 10.0 17 27 IDLE 0
+Lark 187 Condor 98.4 10.0 21 2 IDLE 0
+Onyx 666 Kestrel 67.1 2.0 28 14 IDLE 0
+Kite 682 Condor 72.2 10.0 28 17 IDLE 0
+Zephyr 395 Condor 88.6 10.0 19 17 IDLE 0
+Lynx 750 Kestrel 79.3 2.0 5 25 IDLE 0
+Storm 384 Condor 95.8 10.0 20 23 IDLE 0
+Gale 494 Condor 49.6 10.0 3 7 IDLE 0
+Bolt 231 Condor 50.9 10.0 13 26 IDLE 0
+Helix 105 Condor 79.0 10.0 13 30 IDLE 0
+Falcon 719 Condor 65.3 10.0 23 9 CHARGING 0
+Atlas 829 Kestrel 80.6 2.0 1 12 IDLE 0
+Cinder 804 Condor 30.7 10.0 29 25 IDLE 0
