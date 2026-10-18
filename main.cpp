@@ -126,7 +126,7 @@ int main()
         // TODO: if the user types a letter, cin fails. Recover (cin.clear and
         //       cin.ignore from <limits>) instead of crashing or looping forever.
 
-        if (cin.fail()){
+        if (cin.fail()){ //automatically checks for integer as choice is int value
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');//clear buffer
         }
@@ -142,6 +142,156 @@ int main()
             fleet.displayAll();
             break;
         // TODO: cases 2 to 14 (table in Section 5)
+        case 2:
+            fleet.selectionSortByID();
+            break;
+
+        case 3:
+            fleet.insertionSortByBattery();
+            break;
+
+        case 4:
+            fleet.sortByName();
+            break;
+
+        case 5:
+        {
+            cout << "Enter a seed for shuffling: " << endl;
+            unsigned long long seed;
+            cin >> seed;
+            fleet.shuffleFleet(seed);
+            break;
+        }
+
+        case 6:
+        {
+            cout << "Enter a name to search for: " << endl;
+            string name;
+            cin >> name;
+            int index = fleet.linearSearchByName(name);
+            if (index != -1){ //-1 means that the name was not found in the list
+                fleet.displayDrone(index);
+            }
+            else{
+                cout << "Drone with name " << name << " not found." << endl;
+            }
+            break;
+        }
+        
+        case 7:
+        {
+            cout << "Enter an ID to search for: " << endl;
+            int id;
+            cin >> id;
+            int index2 = fleet.binarySearchByID(id);
+            if (index2 != -1){ //-1 means that the ID was not found in the list
+                fleet.displayDrone(index2);
+            }
+            else{
+                cout << "Drone with ID " << id << " not found." << endl;
+            }
+            break;
+        }
+
+        case 8:
+        {
+            cout << "Enter x, y coordinates and weight: " << endl;
+            int x, y;
+            double weight;
+            cin >> x >> y >> weight;
+
+            int idx = fleet.findNearestAvailable(x, y, weight);
+            if (idx != -1){
+                fleet.displayDrone(idx);
+            }
+            else{
+                cout << "No available drone found." << endl;
+            }
+            break;
+        }
+
+        case 9:
+        {
+            cout << "Enter the index of the drone to dispatch: " << endl;
+            int dispatchIndex;
+            cin >> dispatchIndex;
+
+            cout << "Enter x, y coordinates and weight: " << endl;
+            int dx, dy;
+            double dweight;
+            cin >> dx >> dy >> dweight;
+
+            if (fleet.dispatchDrone(dispatchIndex, dx, dy, dweight)){
+                cout << "Drone dispatched successfully." << endl;
+            }
+            else{
+                cout << "Failed to dispatch drone." << endl;
+            }
+            break;
+        }
+
+        case 10:
+        {
+            cout << "Enter the ID of the drone to recharge: " << endl;
+            int rechargeID;
+            cin >> rechargeID;
+
+            if (fleet.rechargeDrone(rechargeID)){
+                cout << "Drone recharged successfully." << endl;
+            }
+            else{
+                cout << "Failed to recharge drone." << endl;
+            }
+            break;
+        }
+
+        case 11:
+            fleet.countByStatus();
+            break;
+        
+        case 12:
+        {
+            cout << "Enter the order file name: " << endl;
+            string orderFile;
+            cin >> orderFile;
+
+            cout << "Enter the log file name: " << endl;
+            string logFile;
+            cin >> logFile;
+
+            fleet.processOrders(orderFile, logFile);
+            break;
+        }
+        
+        case 13:
+        {
+            cout << "Enter the filename to write the fleet to: " << endl;
+            string outputFile;
+            cin >> outputFile;
+
+            fleet.writeFleetToFile(outputFile);
+            break;
+        }
+
+        case 14:
+        {
+            cout << "Enter drone details (name id model battery maxPayload x y status): " << endl;
+            string newName, newModel, newStatus;
+            int newId, newX, newY;
+            double newBattery, newMaxPayload;
+            cin >> newName >> newId >> newModel >> newBattery >> newMaxPayload >>
+            newX >> newY >> newStatus;
+
+            Drone newDrone(newName, newId, newModel, newBattery, newMaxPayload, newX, newY, newStatus);
+            if (fleet.addDrone(newDrone)){
+                cout << "Drone added successfully." << endl;
+            }
+            else{
+                cout << "Failed to add drone. Duplicate ID?" << endl;
+            }
+            break;
+        }
+
         case 0:
             cout << "Goodbye!" << endl;
             break;
