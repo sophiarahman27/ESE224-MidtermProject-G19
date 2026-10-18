@@ -103,7 +103,7 @@ void Fleet::insertionSortByBattery()
     for (int i = 1; i < n; i++){
         Drone key = drones[i];
         int j = i - 1;
-        while (j >= 0){                                       //do not coutn start as a comparison
+        while (j >= 0){                                       //do not count start as a comparison
             ++comparisons;                                   //key vs. drone at index j
             if (drones[j].getBattery() < key.getBattery()){   //lower battery moves right 
                 drones[j + 1] = drones[j];
