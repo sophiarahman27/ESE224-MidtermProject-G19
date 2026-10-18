@@ -360,10 +360,26 @@ void Fleet::processOrders(const string& orderFile, const string& logFile)
 
 // ---------- Other ----------
 
+unsigned long long Fleet::nextRandom(unsigned long long &state) const
+{
+    state = (state * 1103515245ULL + 12345ULL) % 2147483648ULL;
+    return state;
+}
+
 void Fleet::shuffleFleet(unsigned long long seed)
 {
     // TODO: Fisher-Yates. state = seed; for i from n-1 down to 1:
     //       j = nextRandom(state) % (i + 1), then swap drones i and j.
+    unsigned long long state = seed;
+    int n = getSize();
+    for(int i = n - 1; i >= 1; i--){
+        int j = nextRandom(state) % (i + 1);
+
+        Drone temp = drones[i];
+        drones[i] = drones[j];
+        drones[j] = temp;
+    }
+
 }
 
 void Fleet::displayAll() const
