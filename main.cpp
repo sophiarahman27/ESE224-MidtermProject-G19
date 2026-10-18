@@ -1,6 +1,6 @@
 // main.cpp
 // ESE 224 Fall 2026 Midterm Project (starter code)
-// Team members: TODO
+// Team members: Sophia Rahman and Nafisa Patwary
 //
 // This skeleton compiles and shows the menu. Fill in each TODO (see Section 5 of the handout).
 

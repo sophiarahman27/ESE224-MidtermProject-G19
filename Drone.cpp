@@ -16,9 +16,9 @@ using namespace std;
 Drone::Drone()
 {
     // TODO: set every member to its default value (table in Section 3.2)
-    name = ""; // SOP
+    name = ""; 
     ID = -1;
-    model = ""; // SOP
+    model = ""; 
     battery = 100.0;
     maxPayload = 0.0;
     position[0] = 0;
@@ -31,7 +31,7 @@ Drone::Drone(const string& n, int id, const string& m, double b, double p,
              int x, int y, const string& s) : Drone()
 {
     // TODO: set each member by calling its mutator, so invalid values keep the default
-    setName(n); // Line 34 - 41 by SOP
+    setName(n); 
     setID(id);
     setModel(m);
     setBattery(b);
@@ -54,7 +54,7 @@ int Drone::getDeliveriesCompleted() const { return deliveriesCompleted; }
 int Drone::getPosition(int index) const
 {
     // TODO: index 0 is x, index 1 is y; any other index prints an error and returns -1
-    if(index == 0){        // Line 57 - 64 by SOP
+    if(index == 0){      
         return position[0];
     }else if(index == 1){
         return position[1];
@@ -74,7 +74,7 @@ void Drone::setName(const string& n)
 bool Drone::setID(int id)
 {
     // TODO: valid when id > 0
-    if(id > 0){      // Line 77 - 81 by SOP
+    if(id > 0){      
         ID = id;
         return true;
     }
@@ -85,7 +85,7 @@ bool Drone::setID(int id)
 bool Drone::setModel(const string& m)
 {
     // TODO: valid when m is "Kestrel", "Falcon", or "Condor"
-    if(m == "Kestrel" || m == "Falcon" || m == "Condor"){  // Line 88 - 92 by SOP
+    if(m == "Kestrel" || m == "Falcon" || m == "Condor"){ 
         model = m;
         return true;
     }
@@ -96,11 +96,11 @@ bool Drone::setModel(const string& m)
 bool Drone::setBattery(double b)
 {
     // TODO: valid when 0 <= b <= 100
-    if(b >= 0 && b <= 100){  // Line 99 - 103 by SOP
+    if(b >= 0 && b <= 100){ 
         battery = b;
         return true;
     }
-    cout << "Error: battery value must be between 0 and 100" << endl;
+    cout << "Error: battery value must be between 0 and 100" << endl; // Any battery level outside of the bounds gets an error message
     return false;
 }
 
@@ -111,14 +111,14 @@ bool Drone::setMaxPayload(double p)
         maxPayload = p;
         return true;
     }
-    cout << "Error: the max payload must be greater than 0" << endl;
+    cout << "Error: the max payload must be greater than 0" << endl; // The max payload can't be 0 or else it doesn't carry anything
     return false;
 }
 
 bool Drone::setPosition(int index, int value)
 {
     // TODO: valid when index is 0 or 1 and value >= 0
-    if((index == 0 || index == 1) && value >= 0){ // Line 121 - 125 by SOP
+    if((index == 0 || index == 1) && value >= 0){ 
         position[index] = value;
         return true;
     }
@@ -142,7 +142,7 @@ bool Drone::setStatus(const string& s)
 double Drone::distanceTo(int x, int y) const
 {
     // TODO: straight-line distance from this drone to (x, y)
-    double dx = x - position[0];        //Lines 145 - 147 by SOP
+    double dx = x - position[0];      
     double dy = y - position[1];
     return sqrt((dx * dx) + (dy * dy));
 }
@@ -150,7 +150,7 @@ double Drone::distanceTo(int x, int y) const
 double Drone::batteryNeeded(int x, int y, double weight) const
 {
     // TODO: distanceTo(x, y) * BATTERY_PER_UNIT * (1 + PAYLOAD_FACTOR * weight)
-    return distanceTo(x, y) * BATTERY_PER_UNIT * (1 + PAYLOAD_FACTOR * weight); // By SOP
+    return distanceTo(x, y) * BATTERY_PER_UNIT * (1 + PAYLOAD_FACTOR * weight); 
 }
 
 bool Drone::canDeliver(int x, int y, double weight) const
@@ -158,14 +158,14 @@ bool Drone::canDeliver(int x, int y, double weight) const
     // TODO: IDLE, weight <= maxPayload, and enough battery to keep SAFETY_RESERVE
     if(status == "IDLE" && weight <= maxPayload && battery - batteryNeeded(x, y, weight) >= SAFETY_RESERVE){
         return true;
-    }                   // Lines 159 - 161 by SOP
+    }                
     return false;  
 }
 
 void Drone::completeDelivery(int x, int y, double weight)
 {
     // TODO: use battery, move to (x, y), count the delivery, switch to CHARGING if below LOW_BATTERY
-    battery = battery - batteryNeeded(x, y, weight); //Lines 168 - 174 by SOP
+    battery = battery - batteryNeeded(x, y, weight); 
     position[0] = x;
     position[1] = y;
     deliveriesCompleted++;
@@ -179,7 +179,7 @@ void Drone::completeDelivery(int x, int y, double weight)
 void Drone::displayDrone() const
 {
     // TODO: print every member with a label
-    cout << "Name: " << name << endl; // Lines 182 - 189 by SOP
+    cout << "Name: " << name << endl; 
     cout << "ID: " << ID << endl;
     cout << "Model: " << model << endl;
     cout << "Battery: " << fixed << setprecision(1) << battery << "%" << endl;
@@ -192,5 +192,5 @@ void Drone::displayDrone() const
 bool Drone::operator==(const Drone& other) const
 {
     // TODO: two drones are equal if they have the same ID
-    return ID == other.ID; // SOP
+    return ID == other.ID;
 }
